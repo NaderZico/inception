@@ -36,15 +36,48 @@ else
   echo "--> nakhalil.42.fr already present in /etc/hosts"
 fi
 
-echo "[5/6] Creating secrets with simple passwords..."
+echo "[5/6] Creating secrets and usernames..."
 mkdir -p secrets
+
+# Passwords
 echo "password123" > secrets/db_password.txt
 echo "root123"     > secrets/db_root_password.txt
 echo "password123" > secrets/wp_admin_password.txt
 echo "password123" > secrets/wp_user_password.txt
 echo "password123" > secrets/ftp_password.txt
-chmod 600 secrets/*.txt
-echo "--> Secrets populated and secured with 600 permissions."
+
+# Usernames
+echo "nakhalil"        > secrets/db_user.txt
+echo "nakhalil_master" > secrets/wp_admin_user.txt
+echo "student_user"    > secrets/wp_user.txt
+echo "ftpuser"         > secrets/ftp_user.txt
+
+# Complete credentials file (as shown in subject example)
+cat << 'EOF' > secrets/credentials.txt
+=== INCEPTION CREDENTIALS ===
+
+WordPress (https://nakhalil.42.fr):
+  Admin:   nakhalil_master / password123
+  Author:  student_user / password123
+
+MariaDB / Adminer (https://nakhalil.42.fr/adminer):
+  Server:   mariadb
+  Database: wordpress_db
+  User:     nakhalil / password123
+  Root:     root / root123
+
+FTP Server (Port 21):
+  User:     ftpuser / password123
+
+Static Site:
+  URL:      https://nakhalil.42.fr/static/
+
+cAdvisor Monitoring:
+  URL:      http://localhost:8080
+EOF
+
+chmod 600 secrets/*
+echo "--> Passwords, usernames, and credentials.txt created in secrets/ (chmod 600)."
 
 echo "[6/6] Building and starting Inception..."
 sg docker -c "make all"
