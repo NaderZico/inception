@@ -18,21 +18,45 @@ All web traffic enters through NGINX on port 443 (HTTPS). Internal services are 
 
 ---
 
-## 2. Start and Stop the Project
+## 2. Start, Stop, and Manage the Project (Makefile Rules)
 
 All commands must be run from the **project root directory** (where the `Makefile` is located).
 
+### Core Lifecycle & Management Commands
+
 | Command | Effect |
 |---|---|
-| `make all` | Build all Docker images and start all containers (use on first run) |
-| `make up` | Start containers using already-built images |
-| `make stop` | Pause all running containers (data is preserved, containers stay) |
+| `make all` | Build all Docker images and start the entire infrastructure (default target) |
+| `make build` | Prepare host data directories (`/home/nakhalil/data`) and build all Docker images without starting them |
+| `make up` | Start all containers in detached mode using existing images |
+| `make down` | Stop and remove all containers and the Docker network (persistent data on disk is preserved) |
+| `make stop` | Pause all running containers without removing them |
 | `make start` | Resume paused containers |
-| `make down` | Stop and remove containers and the Docker network (data on disk is preserved) |
-| `make fclean` | Full reset: remove all containers, images, volumes, and delete all data on disk |
-| `make re` | `fclean` followed by `all` — complete rebuild from scratch |
+| `make status` | View the status and health of all containers (`docker compose ps`) |
+| `make logs` | Follow and stream real-time logs from all running containers (`docker compose logs -f`) |
+| `make clean` | Stop containers and remove unused Docker cache and stopped containers (`down` + `prune -f`) |
+| `make fclean` | Complete purge: removes containers, networks, all Docker images, volumes, and wipes persistent host data (`/home/nakhalil/data`) |
+| `make re` | Full rebuild: runs `fclean` followed by `all` to rebuild everything from scratch |
 
-> **Note:** `make stop`/`make start` preserves container state. `make down`/`make up` removes containers but preserves your WordPress and database data.
+### Individual Service Targets
+
+You can build and restart a single service independently without affecting the rest of the stack:
+
+| Command | Effect |
+|---|---|
+| `make mariadb` | Rebuild and start only the **MariaDB** container |
+| `make wordpress` | Rebuild and start only the **WordPress** container |
+| `make nginx` | Rebuild and start only the **NGINX** container |
+| `make redis` | Rebuild and start only the **Redis** cache container |
+| `make adminer` | Rebuild and start only the **Adminer** web GUI container |
+| `make static_site` | Rebuild and start only the **Static Site** container |
+| `make cadvisor` | Rebuild and start only the **cAdvisor** metrics container |
+| `make ftp` | Rebuild and start only the **FTP** server container |
+
+> **Note:** 
+> - Use `make stop` and `make start` for temporary pauses (keeps container state intact).
+> - Use `make down` and `make up` when updating configuration or restarting containers (data on disk is preserved).
+> - Use `make fclean` only when you want to wipe all databases, uploaded media, and start completely fresh.
 
 ---
 
