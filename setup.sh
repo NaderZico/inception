@@ -36,15 +36,15 @@ else
   echo "--> nakhalil.42.fr already present in /etc/hosts"
 fi
 
-echo "[5/6] Creating secrets..."
+echo "[5/6] Creating secrets with simple passwords..."
 mkdir -p secrets
-[ ! -f secrets/db_password.txt ]      && echo "user_password123"    > secrets/db_password.txt
-[ ! -f secrets/db_root_password.txt ] && echo "root_password123"    > secrets/db_root_password.txt
-[ ! -f secrets/wp_admin_password.txt ]&& echo "master_password123"  > secrets/wp_admin_password.txt
-[ ! -f secrets/wp_user_password.txt ] && echo "student_password123" > secrets/wp_user_password.txt
-[ ! -f secrets/ftp_password.txt ]     && echo "ftp_password123"     > secrets/ftp_password.txt
+echo "password123" > secrets/db_password.txt
+echo "root123"     > secrets/db_root_password.txt
+echo "password123" > secrets/wp_admin_password.txt
+echo "password123" > secrets/wp_user_password.txt
+echo "password123" > secrets/ftp_password.txt
 chmod 600 secrets/*.txt
-echo "--> Secrets created and secured with 600 permissions."
+echo "--> Secrets populated and secured with 600 permissions."
 
 echo "[6/6] Building and starting Inception..."
 sg docker -c "make all"
@@ -60,8 +60,17 @@ done
 
 echo "=========================================="
 echo "  Inception is fully built and running!   "
+echo ""
+echo "  Credentials & URLs:                     "
 echo "  WordPress:   https://nakhalil.42.fr     "
+echo "    Admin:     nakhalil_master / password123"
+echo "    Author:    student_user / password123 "
+echo ""
 echo "  Adminer:     https://nakhalil.42.fr/adminer"
+echo "    Server:    mariadb                    "
+echo "    User:      nakhalil / password123     "
+echo ""
 echo "  Static Site: https://nakhalil.42.fr/static/"
 echo "  cAdvisor:    http://localhost:8080      "
+echo "  FTP:         ftpuser / password123      "
 echo "=========================================="
