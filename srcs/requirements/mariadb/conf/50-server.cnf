@@ -7,5 +7,7 @@ basedir         = /usr
 datadir         = /var/lib/mysql
 tmpdir          = /tmp
 bind-address    = 0.0.0.0
+skip-name-resolve
+max_connect_errors = 1000000
 character-set-server  = utf8mb4
 collation-server      = utf8mb4_general_ci

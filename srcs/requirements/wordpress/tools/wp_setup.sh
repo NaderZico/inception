@@ -8,10 +8,12 @@ WP_USER_PASSWORD=$(cat /run/secrets/wp_user_password)
 mkdir -p /run/php /var/www/html
 chown -R www-data:www-data /var/www/html
 chmod -R 775 /var/www/html
-
-until mariadb-admin ping -h"mariadb" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" --silent; do
+echo "Waiting for MariaDB connection..."
+until mariadb-admin -h"mariadb" -u"${MYSQL_USER}" -p"${MYSQL_PASSWORD}" --skip-ssl ping >/dev/null 2>&1; do
+    echo "MariaDB is not ready yet, retrying in 2 seconds..."
     sleep 2
 done
+echo "Connected to MariaDB successfully!"
 
 if [ ! -f /var/www/html/wp-config.php ]; then
     wp core download --path=/var/www/html --allow-root --force

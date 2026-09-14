@@ -49,6 +49,15 @@ echo "--> Secrets created and secured with 600 permissions."
 echo "[6/6] Building and starting Inception..."
 sg docker -c "make all"
 
+echo "Waiting for WordPress to finish downloading and initializing database..."
+for i in {1..30}; do
+  if [ -f /home/nakhalil/data/wordpress/wp-config.php ]; then
+    echo "--> WordPress setup completed successfully!"
+    break
+  fi
+  sleep 2
+done
+
 echo "=========================================="
 echo "  Inception is fully built and running!   "
 echo "  WordPress:   https://nakhalil.42.fr     "
