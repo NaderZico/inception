@@ -25,8 +25,8 @@ echo \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-echo "[3/6] Adding user nakhalil to docker group..."
-sudo usermod -aG docker nakhalil
+echo "[3/6] Adding user '$USER' to docker group..."
+sudo usermod -aG docker "$USER"
 
 echo "[4/6] Configuring /etc/hosts..."
 if ! grep -q "nakhalil.42.fr" /etc/hosts; then
