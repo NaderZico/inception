@@ -9,7 +9,7 @@ all: build up
 
 build:
 	@sudo mkdir -p $(MARIADB_DIR) $(WORDPRESS_DIR)
-	@sudo chown -R $(USER):$(USER) $(DATA_DIR)
+	@sudo chown -R nakhalil:nakhalil $(DATA_DIR)
 	@sudo chmod -R 775 $(DATA_DIR)
 	@docker compose -f $(COMPOSE_FILE) build
 
