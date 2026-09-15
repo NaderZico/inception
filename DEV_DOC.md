@@ -68,14 +68,17 @@ All orchestration is done via the `Makefile` at the project root. It calls `dock
 make all
 ```
 
-This runs two steps in sequence:
+This runs three steps in sequence:
 
-1. **`make build`**
+1. **`make secrets`**
+   - Automatically initializes any missing password or user files in `secrets/` with secure 600 permissions if not already present.
+
+2. **`make build`**
    - Creates `/home/nakhalil/data/mariadb` and `/home/nakhalil/data/wordpress` on the host (the volume backing directories).
    - Fixes ownership of those directories to the current user.
    - Runs `docker compose build` — builds all 8 Docker images from their respective `Dockerfile`s in `srcs/requirements/`.
 
-2. **`make up`**
+3. **`make up`**
    - Runs `docker compose up -d` — creates the `inception_net` network, mounts the named volumes, applies Docker secrets, and starts all 8 containers in detached mode.
 
 ### Subsequent runs (images already built)

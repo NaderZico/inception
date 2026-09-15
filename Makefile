@@ -1,13 +1,28 @@
+USER ?= $(shell whoami)
 NAME = inception
 COMPOSE_FILE = srcs/docker-compose.yml
 DATA_DIR = /home/nakhalil/data
 MARIADB_DIR = $(DATA_DIR)/mariadb
 WORDPRESS_DIR = $(DATA_DIR)/wordpress
+SECRETS_DIR = secrets
 
-.PHONY: all build up down stop start clean fclean re status logs mariadb wordpress nginx redis adminer static_site cadvisor ftp
-all: build up
+.PHONY: all build up down stop start clean fclean re status logs secrets mariadb wordpress nginx redis adminer static_site cadvisor ftp
+all: secrets build up
 
-build:
+secrets:
+	@mkdir -p $(SECRETS_DIR)
+	@test -f $(SECRETS_DIR)/db_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/db_password.txt
+	@test -f $(SECRETS_DIR)/db_root_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/db_root_password.txt
+	@test -f $(SECRETS_DIR)/wp_admin_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/wp_admin_password.txt
+	@test -f $(SECRETS_DIR)/wp_user_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/wp_user_password.txt
+	@test -f $(SECRETS_DIR)/ftp_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/ftp_password.txt
+	@test -f $(SECRETS_DIR)/db_user.txt || echo "nakhalil" > $(SECRETS_DIR)/db_user.txt
+	@test -f $(SECRETS_DIR)/wp_admin_user.txt || echo "nakhalil_master" > $(SECRETS_DIR)/wp_admin_user.txt
+	@test -f $(SECRETS_DIR)/wp_user.txt || echo "student_user" > $(SECRETS_DIR)/wp_user.txt
+	@test -f $(SECRETS_DIR)/ftp_user.txt || echo "ftpuser" > $(SECRETS_DIR)/ftp_user.txt
+	@chmod 600 $(SECRETS_DIR)/* 2>/dev/null || true
+
+build: secrets
 	@sudo mkdir -p $(MARIADB_DIR) $(WORDPRESS_DIR)
 	@sudo chown -R $(USER):$(USER) $(DATA_DIR)
 	@sudo chmod -R 775 $(DATA_DIR)
