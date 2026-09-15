@@ -16,6 +16,28 @@ secrets:
 	@test -f $(SECRETS_DIR)/wp_admin_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/wp_admin_password.txt
 	@test -f $(SECRETS_DIR)/wp_user_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/wp_user_password.txt
 	@test -f $(SECRETS_DIR)/ftp_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/ftp_password.txt
+	@test -f $(SECRETS_DIR)/credentials.txt || ( \
+		echo "=== INCEPTION CREDENTIALS ==="; \
+		echo ""; \
+		echo "WordPress (https://nakhalil.42.fr):"; \
+		echo "  Admin:   nakhalil_master / $$(cat $(SECRETS_DIR)/wp_admin_password.txt)"; \
+		echo "  Author:  student_user / $$(cat $(SECRETS_DIR)/wp_user_password.txt)"; \
+		echo ""; \
+		echo "MariaDB / Adminer (https://nakhalil.42.fr/adminer):"; \
+		echo "  Server:   mariadb"; \
+		echo "  Database: wordpress_db"; \
+		echo "  User:     nakhalil / $$(cat $(SECRETS_DIR)/db_password.txt)"; \
+		echo "  Root:     root / $$(cat $(SECRETS_DIR)/db_root_password.txt)"; \
+		echo ""; \
+		echo "FTP Server (Port 21):"; \
+		echo "  User:     ftpuser / $$(cat $(SECRETS_DIR)/ftp_password.txt)"; \
+		echo ""; \
+		echo "Static Site:"; \
+		echo "  URL:      https://nakhalil.42.fr/static/"; \
+		echo ""; \
+		echo "cAdvisor Monitoring:"; \
+		echo "  URL:      http://localhost:8080"; \
+	) > $(SECRETS_DIR)/credentials.txt
 	@chmod 600 $(SECRETS_DIR)/* 2>/dev/null || true
 
 build: secrets
