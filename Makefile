@@ -16,10 +16,6 @@ secrets:
 	@test -f $(SECRETS_DIR)/wp_admin_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/wp_admin_password.txt
 	@test -f $(SECRETS_DIR)/wp_user_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/wp_user_password.txt
 	@test -f $(SECRETS_DIR)/ftp_password.txt || openssl rand -base64 12 | tr -dc A-Za-z0-9 > $(SECRETS_DIR)/ftp_password.txt
-	@test -f $(SECRETS_DIR)/db_user.txt || echo "nakhalil" > $(SECRETS_DIR)/db_user.txt
-	@test -f $(SECRETS_DIR)/wp_admin_user.txt || echo "nakhalil_master" > $(SECRETS_DIR)/wp_admin_user.txt
-	@test -f $(SECRETS_DIR)/wp_user.txt || echo "student_user" > $(SECRETS_DIR)/wp_user.txt
-	@test -f $(SECRETS_DIR)/ftp_user.txt || echo "ftpuser" > $(SECRETS_DIR)/ftp_user.txt
 	@chmod 600 $(SECRETS_DIR)/* 2>/dev/null || true
 
 build: secrets
