@@ -27,7 +27,6 @@ All commands must be run from the **project root directory** (where the `Makefil
 | Command | Effect |
 |---|---|
 | `make all` | Build all Docker images and start the entire infrastructure (default target) |
-| `make secrets` | Initialize missing password and user files in `secrets/` with secure permissions |
 | `make build` | Prepare host data directories (`/home/nakhalil/data`) and build all Docker images without starting them |
 | `make up` | Start all containers in detached mode using existing images |
 | `make down` | Stop and remove all containers and the Docker network (persistent data on disk is preserved) |
