@@ -1,6 +1,6 @@
-# Inception — Architecture & Docker Networking Reference
+# Inception — Architecture Reference
 
-A comprehensive guide to the Inception infrastructure: service architecture, inter-container communication, shared storage, secrets, and an in-depth deep dive into **Docker Networking**.
+A reference for the Inception infrastructure: service architecture, inter-container communication, shared storage, and Docker networking internals.
 
 ---
 
@@ -126,9 +126,9 @@ flowchart TB
 
 ---
 
-## 3. Deep Dive: Docker Networking Explained in Detail
+## 3. Docker Networking
 
-Understanding Docker networking is a major focus of 42 School evaluations. Below is the technical breakdown from Linux kernel concepts up to Docker Compose DNS resolution.
+Technical breakdown of how Docker networking works from Linux kernel concepts up to Docker Compose DNS resolution.
 
 ### A. What is a Docker Network Under the Hood?
 A Docker container is not an isolated machine; it is a regular Linux process running inside isolated **kernel namespaces**:
@@ -204,9 +204,9 @@ The Inception subject explicitly forbids both `network_mode: host` and `--link`.
 
 ---
 
-### E. Diagnostic Commands for Evaluations
+### E. Diagnostic Commands
 
-Evaluators often ask to inspect the network live during defense:
+Useful commands for inspecting the network live:
 
 ```bash
 # 1. List all Docker networks
